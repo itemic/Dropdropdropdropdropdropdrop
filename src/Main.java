@@ -6,18 +6,10 @@ public class Main {
         System.out.println("Hello World!");
         Board b = new Board();
         b.printBoard();
-        b.place(5, 0, 3);
-        b.place(6, 0,1);
-        b.place(6, 1, 2);
-        b.place(6, 2, 4);
-        b.place(6, 3, 4);
-        b.place(5, 3, 1);
-        b.place(5, 2, 1);
-        b.place(6,4,5);
-        b.place(5,4,5);
-        b.place(6, 5, 6);
-        b.place(6, 6, 1);
-        b.printBoard();
+        b.place(6, 2, 5);
+        b.place(1, 0, 3);
+//        b.printBoard();
+        b.trickle();
         b.resolve();
         b.printBoard();
 

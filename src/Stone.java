@@ -27,6 +27,7 @@ public class Stone {
     public int getValue() { // always check if revealed
         return this.value;
     }
+    public int getLayer() {return this.layer;}
 
     public String toString() {
         if (this.layer == 2) {

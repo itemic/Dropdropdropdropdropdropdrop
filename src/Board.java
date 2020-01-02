@@ -28,6 +28,7 @@ public class Board {
     }
 
     public void place(int x, int y, int value) {
+
         board[x][y] = new Stone(value, 0);
         trickle();
     }
@@ -59,22 +60,24 @@ public class Board {
 
 
                 }
-                for (Coordinate c: toDestroy) {
+
+
+
+//                printBoard();
+            }
+            for (Coordinate c: toDestroy) {
 //                    System.out.println("Destroying..." + c.x + ", " + c.y);
-                    board[c.x][c.y] = null;
-                    for (int cx = c.x - 1; cx <= c.x + 1; cx++) {
-                        for (int cy = c.y-1; cy <= c.y+1; cy++) {
-                            if (cx >= 0 && cx < BOARD_SIZE && cy >= 0 && cy < BOARD_SIZE && board[cx][cy] != null) {
-                                board[cx][cy].shatter();
-                            }
+                board[c.x][c.y] = null;
+                for (int cx = c.x - 1; cx <= c.x + 1; cx++) {
+                    for (int cy = c.y-1; cy <= c.y+1; cy++) {
+                        if (cx >= 0 && cx < BOARD_SIZE && cy >= 0 && cy < BOARD_SIZE && board[cx][cy] != null) {
+                            board[cx][cy].shatter();
                         }
                     }
                 }
-
-                toDestroy.clear();
-                trickle();
-//                printBoard();
             }
+            toDestroy.clear();
+            trickle();
         } while (changeDetected);
 
         //1. go through each element and check if it should be removed
@@ -98,9 +101,9 @@ public class Board {
             if (height == board[x][y].getValue()) {
                 change = true;
             }
+//            System.out.println("vertical resolved at: " + x + ", " + y +": " + board[x][y] + "  h" + height);
         }
-//        System.out.println("vertical resolved at: " + x + ", " + y);
-//        if (change) System.out.println("mark to destroy...");
+//        if (change) System.out.println("mark to destroy... " + board[x][y]);
         return change;
     }
 
@@ -142,6 +145,36 @@ public class Board {
     }
 
     public void trickle() {
+
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            int size = 0;
+            Stone[] compressed = new Stone[BOARD_SIZE];
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                if (board[j][i] != null) {
+//                    System.out.println("value: " + board[j][i]);
+                    compressed[size] = board[j][i];
+                    size++;
+                }
+            }
+
+//            for (Stone e: compressed) {
+//                System.out.print(e + " ");
+//            }
+//            System.out.println();
+            int nullSize = BOARD_SIZE - size;
+            for (int j = 0; j < nullSize; j++) {
+                board[j][i] = null;
+            }
+
+            for (int j = nullSize; j < BOARD_SIZE; j++) {
+//                System.out.println("error: " + nullSize + " " + j);
+                board[j][i] = compressed[j - nullSize];
+            }
+        }
+
+
+
+        //
         for (int i = 0; i < BOARD_SIZE; i++) {
 //            board[BOARD_SIZE - 1][i] = new Stone(8);
 //            System.out.println("post: " + board[BOARD_SIZE - 1][i]);
