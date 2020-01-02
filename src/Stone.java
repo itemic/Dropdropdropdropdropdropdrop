@@ -17,6 +17,9 @@ public class Stone {
     public void shatter() {
         if (this.layer > 0) {
             this.layer--;
+            if (this.layer == 0) {
+                System.out.println("REVILO: " + this.value);
+            }
         }
     }
 

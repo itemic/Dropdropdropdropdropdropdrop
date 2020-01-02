@@ -6,8 +6,13 @@ public class Main {
         System.out.println("Hello World!");
         Board b = new Board();
         b.printBoard();
-        b.place(6, 2, 5);
-        b.place(1, 0, 3);
+        b.place(0,0, new Stone(2));
+        b.place(0,1, new Stone(2));
+        b.place(0,2, new Stone(2));
+        b.place(0,3, new Stone(2));
+        b.place(0,4, new Stone(2));
+        b.place(0,5, new Stone(2));
+        b.place(0,6, new Stone(2));
 //        b.printBoard();
         b.trickle();
         b.resolve();
@@ -17,7 +22,7 @@ public class Main {
         int next = new Random().nextInt(6)+1;
         System.out.print("next stone: " + next+"\n");
         while (scanner.hasNextInt()) {
-            b.place(0, scanner.nextInt(), next);
+            b.place(0, scanner.nextInt(), new Stone(next, 0));
             b.trickle();
             b.resolve();
             b.printBoard();

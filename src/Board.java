@@ -27,9 +27,9 @@ public class Board {
         }
     }
 
-    public void place(int x, int y, int value) {
+    public void place(int x, int y, Stone stone) {
 
-        board[x][y] = new Stone(value, 0);
+        board[x][y] = stone;
         trickle();
     }
 
@@ -68,13 +68,13 @@ public class Board {
             for (Coordinate c: toDestroy) {
 //                    System.out.println("Destroying..." + c.x + ", " + c.y);
                 board[c.x][c.y] = null;
-                for (int cx = c.x - 1; cx <= c.x + 1; cx++) {
-                    for (int cy = c.y-1; cy <= c.y+1; cy++) {
-                        if (cx >= 0 && cx < BOARD_SIZE && cy >= 0 && cy < BOARD_SIZE && board[cx][cy] != null) {
-                            board[cx][cy].shatter();
-                        }
-                    }
-                }
+
+                if (c.x+1 < BOARD_SIZE && board[c.x+1][c.y] != null) {board[c.x+1][c.y].shatter();}
+                if (c.x-1 >= 0 && board[c.x-1][c.y] != null) {board[c.x-1][c.y].shatter();}
+                if (c.y+1 < BOARD_SIZE && board[c.x][c.y+1] != null) {board[c.x][c.y+1].shatter();}
+                if (c.y-1 >= 0 && board[c.x][c.y-1] != null) {board[c.x][c.y-1].shatter();}
+
+
             }
             toDestroy.clear();
             trickle();
