@@ -27,10 +27,25 @@ public class Board {
         }
     }
 
+    public int getHeight(int y) {
+        int ctr = 0;
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            if (board[i][y] != null) {
+                ctr++;
+            }
+        }
+
+        return ctr;
+    }
+
     public void place(int x, int y, Stone stone) {
 
-        board[x][y] = stone;
-        trickle();
+
+        if (getHeight(y) < BOARD_SIZE) {
+            board[x][y] = stone;
+            trickle();
+        }
+
     }
 
     public void resolve() {
@@ -92,11 +107,8 @@ public class Board {
         boolean change = false;
         if (board[x][y] == null) return false;
         if (board[x][y].isRevealed()) {
-            int nullCtr = 0;
-            for (int a = 0; a < BOARD_SIZE; a++) {
-                if (board[a][y] == null) { nullCtr++; }
-            }
-            int height = BOARD_SIZE - nullCtr;
+
+            int height = getHeight(y);
 //            System.out.println("height is " + height);
             if (height == board[x][y].getValue()) {
                 change = true;
