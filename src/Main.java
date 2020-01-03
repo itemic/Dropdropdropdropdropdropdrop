@@ -19,16 +19,22 @@ public class Main {
         b.printBoard();
 
         Scanner scanner = new Scanner(System.in);
-        int next = new Random().nextInt(6)+1;
-        System.out.print("next stone: " + next+"\n");
-        while (scanner.hasNextInt()) {
-            b.place(0, scanner.nextInt(), new Stone(next, 0));
-            b.trickle();
-            b.resolve();
-            b.printBoard();
-            next = new Random().nextInt(6)+1;
-            System.out.print("next stone: " + next+"\n");
+        b.printAtStart();
+        boolean canContinuePlaying = true;
+        while (canContinuePlaying) {
+            canContinuePlaying = b.takeTurn(scanner.nextInt());
         }
-        b.printBoard();
+
+//        int next = new Random().nextInt(6)+1;
+//        System.out.print("next stone: " + next+"\n");
+//        while (scanner.hasNextInt()) {
+//            b.dropAt(scanner.nextInt());
+//            b.trickle();
+//            b.resolve();
+//            b.printBoard();
+//            next = new Random().nextInt(6)+1;
+//            System.out.print("next stone: " + next+"\n");
+//        }
+//        b.printBoard();
     }
 }

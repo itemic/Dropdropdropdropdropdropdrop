@@ -2,13 +2,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Random;
 
 public class Board {
     public static int BOARD_SIZE = 7;
+    public static int TURN_LENGTH = 5;
+    private static int turns;
+    public Stone nextStone;
+
     private Stone[][] board;
 
     public Board() {
         board = new Stone[BOARD_SIZE][BOARD_SIZE];
+        turns = TURN_LENGTH;
+        nextStone = new Stone(new Random().nextInt(6)+1);
     }
 
     public void printBoard() {
@@ -21,10 +28,40 @@ public class Board {
         System.out.println("---");
     }
 
-    public void dropStoneAtPosition(int pos) {
-        if (pos >= 0 || pos < BOARD_SIZE) {
-
+    public void printAtStart() {
+        System.out.println("next drop (" + nextStone.getValue() + ")");
+        for (int i = 0; i < turns; i++) {
+            System.out.print("*");
         }
+        System.out.println();
+    }
+    /**
+     *
+     * @param column
+     * @return ability to continue again
+     */
+    public boolean takeTurn(int column) {
+        dropAt(column);
+        resolve();
+        printBoard();
+        turns--;
+        if (turns == 0) {
+            boolean gameOver = stoneRow();
+            turns = TURN_LENGTH;
+            if (gameOver) {
+                System.out.println("over!");
+                return false;
+            }
+        }
+        nextStone = new Stone(new Random().nextInt(6)+1);
+        System.out.println("next drop (" + nextStone.getValue() + ")");
+        for (int i = 0; i < turns; i++) {
+            System.out.print("*");
+        }
+        System.out.println();
+
+        return true;
+
     }
 
     public int getHeight(int y) {
@@ -36,6 +73,33 @@ public class Board {
         }
 
         return ctr;
+    }
+
+    /**
+     *
+     * @return whether the user has lost
+     */
+    public boolean stoneRow() {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            if (getHeight(i) > BOARD_SIZE) {
+                return true;
+            }
+        }
+
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE-1; j++) {
+                board[j][i] = board[j+1][i];
+            }
+            board[BOARD_SIZE-1][i] = new Stone(2);
+        }
+        return false;
+    }
+
+
+    public void dropAt(int column /*y*/) {
+        if (getHeight(column) < BOARD_SIZE && column >= 0 || column < BOARD_SIZE) {
+            place(0, column, nextStone);
+        }
     }
 
     public void place(int x, int y, Stone stone) {
