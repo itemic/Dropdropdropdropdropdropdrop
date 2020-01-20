@@ -43,7 +43,6 @@ public class Board {
     public boolean takeTurn(int column) {
         dropAt(column);
         resolve();
-        printBoard();
         turns--;
         if (turns == 0) {
             boolean gameOver = stoneRow();
@@ -51,9 +50,13 @@ public class Board {
             if (gameOver) {
                 System.out.println("over!");
                 return false;
+            } else {
+                resolve();
             }
         }
-        nextStone = new Stone(new Random().nextInt(6)+1);
+        resolve();
+        printBoard();
+        nextStone = new Stone(new Random().nextInt(6)+1, 0);
         System.out.println("next drop (" + nextStone.getValue() + ")");
         for (int i = 0; i < turns; i++) {
             System.out.print("*");
